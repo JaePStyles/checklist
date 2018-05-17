@@ -1,0 +1,90 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../polymer/lib/utils/gestures.html">
+
+<dom-module id="jae-styles">
+  <template>
+    <style>
+      .task {
+        display: flex;
+        align-items: center ;
+
+      }
+      paper-input{
+        display: inline-block;
+      }
+
+
+    </style>
+    <h3>Todo list</h3>
+    <dom-repeat 
+    items="{{tasks}}"
+    as="tasks"
+    filter="isNotCompleted"
+    observe='completed'>
+      
+      <template>
+          <div class="task">
+              <paper-checkbox checked="{{tasks.completed}}"></paper-checkbox>
+              <paper-input label="task name" no-label-float value={{tasks.name}}></paper-input>
+            </div>
+      </template>
+    </dom-repeat>
+    <h3>compleated</h3>
+    <dom-repeat
+    items="{{tasks}}"
+    as="tasks"
+    filter="isCompleted"
+    observe='completed'>
+      
+      <template>
+          <div class="task">
+              <paper-checkbox checked="{{tasks.completed}}"></paper-checkbox>
+              <paper-input label="task name" no-label-float value={{tasks.name}}></paper-input>
+            </div>
+      </template>
+    </dom-repeat>
+   
+      <paper-button on-click="addtask">Add task</paper-button>
+  </template>
+
+  <script>
+    /**
+     * `jae-styles`
+     * checklist
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class JaeStyles extends Polymer.Element {
+      static get is() { return 'jae-styles'; }
+      static get properties() {
+        return {
+          tasks: {
+            type:Array,
+            value: () => []
+          }
+        };
+      }
+      addtask() {
+        const newtask = {
+          name: '',
+          completed: false
+        };
+        this.push('tasks',newtask) 
+      }
+      isNotCompleted(task) {
+        return !task.completed;
+      }
+      isCompleted(task) {
+        return task.completed;
+      }
+    }
+
+    window.customElements.define(JaeStyles.is, JaeStyles);
+  </script>
+</dom-module>
